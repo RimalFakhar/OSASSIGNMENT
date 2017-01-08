@@ -1,0 +1,52 @@
+while numberOfProcesses != 0:
+	
+	temp = []
+	for i in range(len(ArrivalTimes)):
+		if ArrivalTimes[i] <= clock :
+			temp.append(ExecutionTimes[i])
+
+	minimumExecutionTime = min(temp)
+	
+	for j in range(len(ExecutionTimes)):
+		if ExecutionTimes[j] == minimumExecutionTime:
+			
+			tmp = j
+			for p in range(ExecutionTimes[j]):
+				processPerClock.append(listOfProcesses[j])
+			listOfProcesses.remove(listOfProcesses[j])
+			
+			ArrivalTimes.remove(ArrivalTimes[j])
+			
+	clock = clock + ExecutionTimes[tmp]
+	ExecutionTimes.remove(ExecutionTimes[tmp])
+
+	numberOfProcesses = numberOfProcesses - 1
+
+print "processPerClock: ", processPerClock
+
+		
+
+waitingtimes = []
+for i in range(len(copyOfListOfProcesses)):
+	waitingtimes.append(processPerClock.index("p" + str(i)))
+
+averageWaitingsTime = float(sum(waitingtimes))/len(copyOfListOfProcesses)
+
+print "average waiting time: ", averageWaitingsTime
+
+responseTimes = []
+for i in range(len(copyOfArrivalTimes)):
+	responseTimes.append(waitingtimes[i]-copyOfArrivalTimes[i])
+
+averageResponseTime = float(sum(responseTimes))/len(copyOfArrivalTimes)
+
+print "average response time: ", averageResponseTime
+
+turnAroundTimes = []
+
+for i in range(len(copyOfArrivalTimes)):
+	turnAroundTimes.append((len(processPerClock) - processPerClock[::-1].index("p" + str(i)) - 1) - copyOfArrivalTimes[i])
+
+averageTurnAroundTime = float(sum(turnAroundTimes))/len(copyOfArrivalTimes)
+
+print "average turnAround time: ", averageTurnAroundTime
